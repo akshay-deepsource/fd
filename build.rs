@@ -7,13 +7,9 @@ include!("src/app.rs");
 fn main() {
     let min_version = "1.42";
 
-    match version_check::is_min_version(min_version) {
-        Some(true) => {}
-        // rustc version too small or can't figure it out
-        _ => {
-            eprintln!("'fd' requires rustc >= {}", min_version);
-            std::process::exit(1);
-        }
+    if let Some(true) = version_check::is_min_version(min_version) {} else {
+        eprintln!("'fd' requires rustc >= {}", min_version);
+        std::process::exit(1);
     }
 
     let var = std::env::var_os("SHELL_COMPLETIONS_DIR").or_else(|| std::env::var_os("OUT_DIR"));
